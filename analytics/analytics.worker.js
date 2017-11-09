@@ -14,20 +14,21 @@ const processSearchEvents = (id) => {
   let messages;
   checkForMessages(searchInbox)
     .then((messageBatch) => {
+      console.log(messageBatch);
       messages = messageBatch.map(message => message.payload);
       const searchQueries = messages.map(message =>
         Object.assign(keyAttributes(message), message.request));
-      elasticSearch.bulkInsertDocuments(ES_INDEX, ES_TYPE_QUERY, searchQueries);
+      // elasticSearch.bulkInsertDocuments(ES_INDEX, ES_TYPE_QUERY, searchQueries);
     })
     .then(() => {
       const searchResults = messages.map(message =>
         Object.assign(keyAttributes(message), reshapeResults(message)));
-      elasticSearch.bulkInsertDocuments(ES_INDEX, ES_TYPE_RESULTS, searchResults);
+      // elasticSearch.bulkInsertDocuments(ES_INDEX, ES_TYPE_RESULTS, searchResults);
     })
     .then(() => {
       const searchResponseTimes = messages.map(message =>
         Object.assign(keyAttributes(message), message.timeline));
-      elasticSearch.bulkInsertDocuments(ES_INDEX, ES_TYPE_PERFORMANCE, searchResponseTimes);
+      // elasticSearch.bulkInsertDocuments(ES_INDEX, ES_TYPE_PERFORMANCE, searchResponseTimes);
     })
     .then(() => {
       setTimeout(processSearchEvents.bind(this, id), SLEEP_MS);

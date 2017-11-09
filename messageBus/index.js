@@ -32,12 +32,15 @@ module.exports.publishSearchEvent = (searchEventId, params, results, timeline) =
   sqs.publish({ topic: TOPIC_SEARCH, payload: messagePayload }, market === MVP_MARKET);
 };
 
-module.exports.checkForMessages = inbox =>
-  sqs.poll(inbox)
+module.exports.checkForMessages = inbox => {
+  console.log('Checking for messages');
+  return sqs.poll(inbox)
     .then((messages) => {
+      console.log('Got messages');
       if (messages.length === 0) return [];
       const messageBodies = messages.map(message => JSON.parse(message.Body));
       sqs.done(inbox, messages);
       return messageBodies;
     })
     .catch(console.error);
+};

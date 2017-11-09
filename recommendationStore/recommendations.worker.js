@@ -7,8 +7,10 @@ const SLEEP_MS = 2000;
 const processRecommendationsEvents = (id) => {
   const taskTimeStart = Date.now();
   let messages;
+  console.log(`Start processRecommendationsEvents ${id}`);
   checkForMessages(recommendationInbox)
     .then((messageBatch) => {
+      console.log(messageBatch);
       messages = messageBatch.map((message) => {
         const { rules, coefficients } = message.payload;
         return {
