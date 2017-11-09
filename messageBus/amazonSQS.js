@@ -1,10 +1,7 @@
 const AWS = require('aws-sdk');
 const config = require('./aws.config');
 
-AWS.config.update({
-  accessKeyId: process.env.SQS_ACCESS_KEY || config.accessKey,
-  secretAccessKey: process.env.SQS_SECRET_KEY || config.secretKey,
-});
+AWS.config.update(config);
 
 const sqs = new AWS.SQS({ region: process.env.SQS_REGION || config.region });
 
